@@ -1,0 +1,10 @@
+name: yolocap-ggcnn
+channels:
+  - conda-forge
+dependencies:
+  - pytorch
+  - numpy
+  - pandas
+  - tensorflow
+  - ipykernel
+  - pip
