@@ -28,7 +28,6 @@ class ResidualBlock(nn.Module): # TODO: Change to dense block
         residual = x
         out = self.block1(x)
         out = self.block2(out)
-        out += residual
 
         if self.shortcut:
             out += residual
