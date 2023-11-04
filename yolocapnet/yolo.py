@@ -13,7 +13,7 @@ class Darknet53(nn.Module):
         if init_weights:
             self.__initialize_weights()
 
-        self.features = nn.Sequential(
+        self.map_1 = nn.Sequential(
             Conv(3, 32, kernel=3),
  
             Conv(32, 64, kernel=3, stride=2),
@@ -24,10 +24,14 @@ class Darknet53(nn.Module):
 
             Conv(128, 256, kernel=3, stride=2),
             *self.__get_layer(block, 256, blocks=8),
+        )
 
+        self.map_2 = nn.Sequential(
             Conv(256, 512, kernel=3, stride=2),
             *self.__get_layer(block, 512, blocks=8),
+        )
 
+        self.map_3 = nn.Sequential(
             Conv(512, 1024, kernel=3, stride=2),
             *self.__get_layer(block, 1024, blocks=4),
         )
@@ -35,13 +39,9 @@ class Darknet53(nn.Module):
         self.fc = nn.Linear(1024, self.num_class)
 
     def forward(self, x):
-        out = self.features(x)
- 
-        if self.include_fc_layer:
-            out = out.view(-1, 1024)
-            out = self.fc(out)
-        
-        return out
+        route_1 = self.map_1(x)
+        route_2 = self.map_2(route_1)
+        return route_1, route_2, self.map_3(route_2)
 
     def __initialize_weights(self):
         for m in self.modules():
