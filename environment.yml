@@ -3,8 +3,12 @@ channels:
   - conda-forge
 dependencies:
   - pytorch
+  - torchvision
   - numpy
   - pandas
   - tensorflow
   - ipykernel
   - pip
+  - pip:
+    - configparser
+    - torchsummary
