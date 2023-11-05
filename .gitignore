@@ -162,3 +162,5 @@ cython_debug/
 dataset/
 references/
 yolocapnet/data/**
+
+utils/weights/**
