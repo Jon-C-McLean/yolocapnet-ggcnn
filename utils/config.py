@@ -10,7 +10,7 @@ def parse_config(file):
     curr_block = {}
 
     for line in lines:
-        if line[0] = '[':
+        if line[0] == '[':
             if len(curr_block) != 0:
                 blocks.append(block)
                 block = {}
