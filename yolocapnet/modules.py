@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from utils.config import parse_config
 
-from yolocapnet.layers.conv import Conv, pad
+from yolocapnet.layers.dbl import DBLBlock, pad
 from yolocapnet.layers.sampling import Upsample
 from yolocapnet.layers.misc import EmptyLayer
 
