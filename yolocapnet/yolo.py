@@ -1,10 +1,10 @@
 import torch
 from torch import nn
 
-from .layers.dbl import DBLBlock
-from .layers.blocks import ResidualBlock
-from .layers.misc import EmptyLayer
-from .layers.scale import ScalePrediction
+from layers.dbl import DBLBlock
+from layers.blocks import ResidualBlock
+from layers.misc import EmptyLayer
+from layers.scale import ScalePrediction
 
 class Darknet53(nn.Module):
     def __init__(self, block, num_class=10, init_weights=True, num_boxes = 10): # Change to allow dev to specify weight initialization func
@@ -129,7 +129,6 @@ class YOLOv3(nn.Module):
 
     def forward(self, x): # XXX: Do I need to add mbox layers?
         route_1, route_2, dn_out = self.backbone(x)
-
         out = self.ldbl(dn_out)
         out = self.lppred(out)
 
@@ -148,7 +147,8 @@ class YOLOv3(nn.Module):
         out = self.sppred(out)
 
         self.s_pred = self.sspred(out)
-        return self.l_pred, self.m_pred, self.s_pred
+
+        return [self.l_pred, self.m_pred, self.s_pred]
 
 if __name__ == "__main__":
     num_classes = 10
@@ -156,8 +156,8 @@ if __name__ == "__main__":
 
     model = YOLOv3(num_class=num_classes)
     x = torch.randn((2, 3, IMAGE_SIZE, IMAGE_SIZE))
-    l, m, s = model(x)
+    out = model(x)
 
-    print(l.shape)
-    print(m.shape)
-    print(s.shape)
+    print(out[0].shape)
+    assert model(x)[0].shape == (2, 3, IMAGE_SIZE // 32, IMAGE_SIZE // 32, num_classes+5)
+    print("Success")

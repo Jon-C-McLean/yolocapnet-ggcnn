@@ -12,3 +12,6 @@ dependencies:
   - pip:
     - configparser
     - torchsummary
+    - pillow
+    - albumentations
+    - tqdm
